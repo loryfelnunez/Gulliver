@@ -1,7 +1,23 @@
 import streamlit as st
+import random
+import time
 
 
-st.title('Echo Bot')
+# Streamed response emulator
+def response_generator():
+    response = random.choice(
+        [
+            "Hello there Aida",
+            "Hello whats ups Lorna",
+            "Hello good day Fe"
+        ]
+    )
+    for word in response.split():
+        yield word + " "
+        time.sleep(0.05)
+
+
+st.title('Simple Chat')
 
 #Initialize chat history
 if "messages" not in st.session_state:
@@ -23,8 +39,11 @@ if prompt := st.chat_input("What is up?"):
 response = f"Echo: {prompt}"
 #Display assistant response in chat message container
 with st.chat_message("assistant"):
-    st.markdown(response)
+    response - st.write_stream(response_generator())
 #add assistant response to chat history
 st.session_state.messages.append({"role": "assistant", "content": response})
+
+
+
 
 
