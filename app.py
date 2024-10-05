@@ -17,7 +17,7 @@ def response_generator():
         time.sleep(0.05)
 
 
-st.title('Simple Chat')
+st.title('Simple Chat Sample App')
 
 #Initialize chat history
 if "messages" not in st.session_state:
