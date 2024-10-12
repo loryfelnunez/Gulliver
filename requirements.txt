@@ -3,7 +3,11 @@ streamlit
 openai
 langchain
 langchain_community
+arxivloader
 arxiv
 pymupdf
+pypdf
 langchain-openai
 python-dotenv
+chromadb
+lark
