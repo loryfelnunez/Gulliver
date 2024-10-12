@@ -1,4 +1,9 @@
 ### dependency
 streamlit
 openai
+langchain
+langchain_community
+arxiv
+pymupdf
 langchain-openai
+python-dotenv
