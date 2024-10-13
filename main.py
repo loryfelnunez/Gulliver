@@ -22,10 +22,22 @@ def generate_response(input_text):
     model = ChatOpenAI(temperature=0.7, api_key=st.session_state["OPENAI_API_KEY"] )
     st.info(model.invoke(input_text))
 
+def index_text(start_date, end_date):
+    pass
+
+with st.form("Query Options"):
+    return_all_chunks = st.checkbox("Show all chunks retrieved from vector search")
+    show_full_doc = st.checkbox("Show parsed contents of the document")
+    arxiv_date_start = st.date_input("Give start date of articles", value=None)
+    arxiv_date_end =  st.date_input("Give end date of articles", value=None)
+    submitted_query = st.form_submit_button("Submit")
+    index_text(arxiv_date_start, arxiv_date_end)
+
+
 with st.form("my_form"):
     text = st.text_area(
         "Enter text:",
-        "What are the three key pieces of advice for learning how to code?",
+        "Summarize the articles for me",
     )
     submitted = st.form_submit_button("Submit")
     if not st.session_state["OPENAI_API_KEY"].startswith("sk-"):
@@ -33,6 +45,10 @@ with st.form("my_form"):
     if submitted and st.session_state["OPENAI_API_KEY"].startswith("sk-"):
         generate_response(text)
 
-with st.expander("Advanced Options"):
-    return_all_chunks = st.checkbox("Show all chunks retrieved from vector search")
-    show_full_doc = st.checkbox("Show parsed contents of the document")
+# with st.spinner("Indexing document... This may take a while⏳"):
+#     folder_index = embed_files(
+#         files=[chunked_file],
+#         embedding=EMBEDDING if model != "debug" else "debug",
+#         vector_store=VECTOR_STORE if model != "debug" else "debug",
+#         openai_api_key=openai_api_key,
+#     )
