@@ -2,6 +2,7 @@ import streamlit as st
 from langchain_openai.chat_models import ChatOpenAI
 
 from components.sidebar import sidebar
+from core import index
 
 from ui import (
     is_query_valid,
