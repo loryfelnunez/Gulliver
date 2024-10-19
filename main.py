@@ -23,8 +23,7 @@ def generate_response(input_text):
     model = ChatOpenAI(temperature=0.7, api_key=st.session_state["OPENAI_API_KEY"] )
     st.info(model.invoke(input_text))
 
-def index_text(start_date, end_date):
-    pass
+
 
 with st.form("Query Options"):
     return_all_chunks = st.checkbox("Show all chunks retrieved from vector search")
@@ -36,7 +35,7 @@ with st.form("Query Options"):
         "Summarize the articles for me",
     )
     submitted = st.form_submit_button("Submit")
-    index_text(arxiv_date_start, arxiv_date_end)
+    index.index_query(arxiv_date_start, arxiv_date_end, text)
     if not st.session_state["OPENAI_API_KEY"].startswith("sk-"):
         st.warning("Please enter your OpenAI API key!", icon="⚠")
     if submitted and st.session_state["OPENAI_API_KEY"].startswith("sk-"):

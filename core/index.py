@@ -27,7 +27,9 @@ def paper_generator(id_list):
 def index_query(start_date, end_date, search_text):
 
     utils.delete_files_in_directory(directory)
-    submittedDate = "[20220701080000+TO+20240701080000]"
+
+    submittedDate = "[" + start_date + "+TO+" + end_date + "]"
+    print ('TEST submitted date ', submittedDate)
     keyword = "neural nets"
     prefix = "all"
     query = "search_query={pf}:{kw}+AND+submittedDate:{sd}".format(pf=prefix, kw=keyword, sd=submittedDate)
