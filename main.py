@@ -30,20 +30,17 @@ with st.form("Query Options"):
     show_full_doc = st.checkbox("Show parsed contents of the document")
     arxiv_date_start = st.date_input("Give start date of articles", value=None)
     arxiv_date_end =  st.date_input("Give end date of articles", value=None)
-    submitted_query = st.form_submit_button("Submit")
-    index_text(arxiv_date_start, arxiv_date_end)
-
-
-with st.form("my_form"):
     text = st.text_area(
         "Enter text:",
         "Summarize the articles for me",
     )
     submitted = st.form_submit_button("Submit")
+    index_text(arxiv_date_start, arxiv_date_end)
     if not st.session_state["OPENAI_API_KEY"].startswith("sk-"):
         st.warning("Please enter your OpenAI API key!", icon="⚠")
     if submitted and st.session_state["OPENAI_API_KEY"].startswith("sk-"):
         generate_response(text)
+
 
 # with st.spinner("Indexing document... This may take a while⏳"):
 #     folder_index = embed_files(
