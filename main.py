@@ -35,10 +35,12 @@ with st.form("Query Options"):
         "Summarize the articles for me",
     )
     submitted = st.form_submit_button("Submit")
-    index.index_query(arxiv_date_start, arxiv_date_end, text)
+
     if not st.session_state["OPENAI_API_KEY"].startswith("sk-"):
         st.warning("Please enter your OpenAI API key!", icon="⚠")
-    if submitted and st.session_state["OPENAI_API_KEY"].startswith("sk-"):
+    #if submitted and st.session_state["OPENAI_API_KEY"].startswith("sk-"):
+    if submitted:
+        index.index_query(arxiv_date_start, arxiv_date_end, text)
         generate_response(text)
 
 

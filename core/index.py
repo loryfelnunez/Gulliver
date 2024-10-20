@@ -5,11 +5,11 @@ from langchain.embeddings.openai import OpenAIEmbeddings
 import arxiv
 import arxivloader
 from utils import utils
+from datetime import datetime
 
-from pathlib import Path
 
 client = arxiv.Client()
-directory = str(Path(Path.cwd()).parents[0])  + "/docs"
+directory =  "./docs"
 print ('directory ', directory)
 
 
@@ -24,12 +24,18 @@ def paper_generator(id_list):
 
 
 
+
 def index_query(start_date, end_date, search_text):
 
-    utils.delete_files_in_directory(directory)
+    utils.remove_all_in_directory(directory)
+    start_date_str = start_date.strftime("%Y%m%d%H%M%S")
+    end_date_str = end_date.strftime("%Y%m%d%H%M%S")
 
-    submittedDate = "[" + start_date + "+TO+" + end_date + "]"
-    print ('TEST submitted date ', submittedDate)
+    submittedDate = "[" + start_date_str + "+TO+" + end_date_str + "]"
+
+    print(submittedDate)
+
+
     keyword = "neural nets"
     prefix = "all"
     query = "search_query={pf}:{kw}+AND+submittedDate:{sd}".format(pf=prefix, kw=keyword, sd=submittedDate)
@@ -38,3 +44,27 @@ def index_query(start_date, end_date, search_text):
     df = arxivloader.load(query)
     print (df.columns)
     print (df.summary)
+    id_list = list(df.id)
+
+    for paper in paper_generator(id_list):
+        try:
+            # Process each paper (print the title, download, etc.)
+            print(f"Title: {paper.title}")
+            # You can add additional processing logic here (e.g., download PDF)
+        except Exception as e:
+            print(f"Error processing paper: {e}")
+
+    docs = utils.file_loader(directory)
+
+    #
+    # # Split
+    # from langchain.text_splitter import RecursiveCharacterTextSplitter
+    # text_splitter = RecursiveCharacterTextSplitter(
+    #     chunk_size = 1500,
+    #     chunk_overlap = 150
+    # )
+    #
+    # splits = text_splitter.split_documents(docs)
+    #
+    # print ("LENGTH OF SPLITS ", len(splits))
+    #
