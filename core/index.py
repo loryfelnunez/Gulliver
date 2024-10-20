@@ -10,6 +10,7 @@ from datetime import datetime
 
 client = arxiv.Client()
 directory =  "./docs"
+directory_db = './docs/chroma/'
 print ('directory ', directory)
 
 
@@ -56,15 +57,30 @@ def index_query(start_date, end_date, search_text):
 
     docs = utils.file_loader(directory)
 
-    #
-    # # Split
-    # from langchain.text_splitter import RecursiveCharacterTextSplitter
-    # text_splitter = RecursiveCharacterTextSplitter(
-    #     chunk_size = 1500,
-    #     chunk_overlap = 150
-    # )
-    #
-    # splits = text_splitter.split_documents(docs)
-    #
-    # print ("LENGTH OF SPLITS ", len(splits))
-    #
+    # Split
+
+    text_splitter = RecursiveCharacterTextSplitter(
+        chunk_size = 1500,
+        chunk_overlap = 150
+    )
+
+    splits = text_splitter.split_documents(docs)
+
+    print ("LENGTH OF SPLITS ", len(splits))
+
+    from langchain.vectorstores import Chroma
+
+    embedding = OpenAIEmbeddings()
+    vectordb = Chroma.from_documents(
+        documents=splits,
+        embedding=embedding,
+        persist_directory=directory_db
+    )
+
+    print("COLLECTION COUNT ", vectordb._collection.count())
+
+    question = "how many layers can a neural net have and what logic can it use"
+    docs = vectordb.similarity_search(question,k=3)
+    print ('similar docs response ', len(docs))
+    print ('answer ', docs[0].page_content)
+    vectordb.persist()
