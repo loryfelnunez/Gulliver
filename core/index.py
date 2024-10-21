@@ -57,7 +57,7 @@ def index_query(start_date, end_date, search_text):
 
     docs = utils.file_loader(directory)
 
-    # Split
+    # Split the text
 
     text_splitter = RecursiveCharacterTextSplitter(
         chunk_size = 1500,
